@@ -28,7 +28,7 @@ export default {
     const posts = ref([ ])
     const error = ref(null)
 
-    //async & await
+    //Daten abholen mit async & await
     const load = async () => {
       try {
         let data = await fetch("http://localhost:3000/posts")
