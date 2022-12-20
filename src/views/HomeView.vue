@@ -17,36 +17,20 @@
 
 <script>
 import PostList from "../components/PostList.vue";
-import { ref } from 'vue'
+import getPosts from "@/composables/getPosts";
 
 export default {
   name: 'HomeView',
   components: { PostList },
   setup() {
 
-    //posts wird in der "load"-Funktion befüllt: posts.value = await data.json()
-    const posts = ref([ ])
-    const error = ref(null)
-
-    //Daten abholen mit async & await
-    const load = async () => {
-      try {
-        let data = await fetch("http://localhost:3000/posts")
-        console.log(data)
-        if (!data.ok) {
-          throw Error("no data available")
-        }
-        posts.value = await data.json()
-      }
-      catch (err) {
-        error.value = err.message
-        console.log(error.value)
-      }
-
-    }
-
+    //getPosts Funktion aus Composables, const extrahiert den return aus getPost
+    const { posts, error, load } = getPosts()
+    
+    //load() wurde aus getPosts() extrahiert und kann nun außerhalb genutzt werden
     load()
 
+    //die extrahierten values müssen weiterhin returnt werden, um außerhalb vom setup() im Template genutzt zu werden
     return { posts, error }
   }
 }
